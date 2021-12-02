@@ -32,6 +32,7 @@ async function doWork() {
   console.log('doing 1st redis test to proof that double requests cause same responses');
   await client.init(connector);
   await createDoublePayments();
+  console.log('מ.ש.ל')
 }
 
-doWork();
+doWork()

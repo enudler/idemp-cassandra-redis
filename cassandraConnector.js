@@ -1,11 +1,4 @@
 const cassandra = require('cassandra-driver');
-const loggerHelper = require('logger-helper');
-
-const logger = loggerHelper.createLogger({
-  name: 'idemp'
-});
-
-module.exports = logger;
 
 let client;
 

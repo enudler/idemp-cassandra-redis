@@ -1,11 +1,5 @@
 const { Redis } = require('redis-client');
-const loggerHelper = require('logger-helper');
 
-const logger = loggerHelper.createLogger({
-  name: 'idemp'
-});
-
-module.exports = logger;
 
 let redisConnector;
 
@@ -21,7 +15,6 @@ async function init() {
 function buildRedisOptions() {
   const options = {
     dev_mode: true,
-    logger: logger,
     host: 'localhost',
     port: 6379
   };
@@ -45,23 +38,17 @@ async function updateIdempRecord(key, response) {
 }
 
 async function getIdempRecord(key) {
-  logger.trace(`redis hgetall record, key: ${key}`);
   const record = await redisConnector.hgetall(key);
-  logger.trace(`redis get record for key: ${key}`);
   return record;
 }
 
 async function healthCheck() {
-  try {
     const response = await redisConnector.healthCheck();
     if (response === 'OK') {
       return {
         status: 'OK'
       };
     }
-  } catch (error) {
-    logger.warn(error, 'HealthCheck to redis failed');
-  }
 }
 
 module.exports = {
