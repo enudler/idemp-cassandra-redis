@@ -63,9 +63,11 @@ function truncateTable(client) {
 }
 
 async function getIdempRecordOrCreateOne(key) {
-  const response = await getIdempRecord(key);
-  if (!response) {
-    await storeIdempInProgress(key);
+  let response;
+  const isStored = await storeIdempInProgress(key);
+  if (!isStored) {
+    response = await getIdempRecord(key);
+
   }
   return response;
 }
@@ -84,11 +86,14 @@ async function getIdempRecord(key) {
 
 async function storeIdempInProgress(key) {
   return new Promise(function(resolve, reject) {
-    client.execute('INSERT INTO idemp(key, in_progress) values (?,?)', [key.toString(), true], { prepare: true }, function(err) {
+    client.execute('INSERT INTO idemp(key, in_progress) values (?,?) IF NOT EXISTS', [key.toString(), true], { prepare: true }, function(err, response) {
       if (err) {
         reject(err);
       } else {
-        resolve();
+        if (response.rows["0"]["[applied]"] === false) {
+          resolve( false);
+        }
+        resolve(true);
       }
     });
   });
