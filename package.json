@@ -1,0 +1,15 @@
+{
+  "name": "idemp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "redis-client": "^2.0.5",
+    "cassandra-driver": "^4.6.3"
+  },
+  "author": "",
+  "license": "ISC"
+}
